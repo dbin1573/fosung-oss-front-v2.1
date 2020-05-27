@@ -25,16 +25,6 @@
                     name: [
                         { required: true, message: '请输入字典名称' },
                         { min: 1, max: 225 , message: '字典名称为1~225个字符' },
-                    ],
-                    code: [
-                        { required: true, message: '请输入字典编码' },
-                        { min: 1, max: 225 , message: '字典编码为1~225个字符' },
-                    ],
-                    num: [
-                        { required: true, message: '请输入字典排序' }
-                    ],
-                    remark: [
-                        { min: 0, max: 225, message: '描述最多允许输入225个字符' }
                     ]
                 }
             }
@@ -42,19 +32,7 @@
 
         methods: {
             afterInitFormData (response = {}){
-                this.$set(this.formData, 'num', response.num || 999);
 
-                if(this.parentParam.parentNode){
-                    if(!this.parentParam.parentNode.id){
-                        this.$error('未获取到父节点id标识');
-                        this.visible = false;
-                        this.parentParam = {};
-                    }else{
-                        this.$set(this.formData, 'parentId', this.parentParam.parentNode.id);
-                    }
-                }else if(!this.parentParam.id){
-                    this.$set(this.formData, 'parentId', 0);
-                }
             }
         }
     }).form().build();

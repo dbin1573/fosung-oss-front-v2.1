@@ -1,13 +1,13 @@
 <template>
     <div class="frame-container" :class="{'min-width': isMinWidth}">
-        <!-- base-icon -->
+<!--         base-icon-->
         <ev-importFile href="//at.alicdn.com/t/font_1078828_tpsdzarm1n.css" type="css"></ev-importFile>
 
         <!-- template-icon -->
         <ev-importFile href="//at.alicdn.com/t/font_1611452_n9tii6ml0c.css" type="css"></ev-importFile>
 
         <!-- project-icon -->
-        <ev-importFile href="//at.alicdn.com/t/font_1781441_kk0wmbjm90i.css" type="css"></ev-importFile>
+        <ev-importFile href="//at.alicdn.com/t/font_1839683_r5jtkm0wx8d.css" type="css"></ev-importFile>
 
         <router-view></router-view>
     </div>

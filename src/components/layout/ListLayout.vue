@@ -72,7 +72,7 @@
 <style lang="scss">
     .common-layout-tab-wrap {
         width: 100%;
-        height: 100%;
+        height: calc(100% - 30px);
         & > div{
             width: 100%;
         }
@@ -137,7 +137,7 @@
             }
             & > .page{
                 text-align: right;
-                margin-top: 3px;
+                margin-top: 9px;
             }
         }
     }

@@ -1,17 +1,22 @@
 <template>
-    <el-dialog append-to-body :title="title" :visible.sync="visible" class="upload-dialog-warp" center width="500px"
-    :before-close="closeHandler">
+    <el-dialog :before-close="closeHandler" :title="title" :visible.sync="visible" append-to-body
+               class="upload-dialog-warp"
+               width="430px">
 
-        <el-upload
-                :on-success="refreshHandler"
-                :action="ossPath"
-                class="upload-demo"
-                drag
-                multiple>
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>
+        <div style="padding: 10px">
+            <el-upload
+                    :action="ossPath"
+                    :on-success="refreshHandler"
+                    class="upload-demo"
+                    drag
+                    multiple
+                    ref="ossUpload">
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
+
+        </div>
 
 
     </el-dialog>
@@ -28,22 +33,31 @@
             }
         },
         methods: {
-            show(title = "Dialog", bucket) {
+            show(title = "Dialog", bucket, directory) {
                 this.visible = true;
-                this.title = title + " " + bucket;
-                let path = "/api/oss/single/" + bucket + "/upload";
+                this.title = title;
 
+                this.buildPath(bucket, directory);
+            },
+
+            buildPath(bucket, directory) {
+                let path = "/api/oss/single/" + bucket + "/upload";
+                path += "?directory=" + directory || "/";
                 this.$set(this, "ossPath", path);
             },
-            refreshHandler() {
-                this.$emit("refreshList");
 
+            refreshHandler() {
+
+                this.$emit("refreshList");
             },
             closeHandler() {
-                this.visible=false;
+                this.visible = false;
+                this.$getRef("ossUpload").clearFiles();
+
                 this.refreshHandler();
             }
-        }
+        },
+
     })
         .store("otherInfo")
         .form()
@@ -52,7 +66,8 @@
 
 <style lang="scss">
     .upload-dialog-warp {
-            padding-bottom: 20px;
+        padding-bottom: 20px;
+
         & > .upload-demo {
         }
     }

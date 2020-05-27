@@ -1,90 +1,94 @@
 <template>
     <ListLayout class="layout-window-warp" title="文件管理">
 
-        <el-select @change="checkBucket" filterable slot="top-right" v-model="queryFormData.bucketName">
-            <el-option :key="index"
-                       :label="item.name"
-                       :value="item.name"
-                       v-for="(item,index) of buckets"
-            >
-            </el-option>
-        </el-select>
-        <el-button @click="uploadHandler(`上传文件`)" plain slot="top-right" type="primary">上传</el-button>
-        <el-button
-                @click="createHandler(`新建目录`,{bucketName:queryFormData.bucketName,directory: directory })"
-                plain slot="top-right" type="primary">新建目录
-        </el-button>
+        <div slot="top-right">
+            <el-select @change="checkBucket" filterable v-model="queryFormData.bucketName">
+                <el-option :key="index"
+                           :label="item.name"
+                           :value="item.name"
+                           v-for="(item,index) of buckets"
+                >
+                </el-option>
+            </el-select>
+            <el-button @click="uploadHandler(`上传文件`)" plain type="danger">上传</el-button>
 
-        <div class="block-box-shadow" slot="table">
-            <div class="dbin-top-red-line"></div>
-            <span style="float:left">当前位置:</span>
-            <el-breadcrumb separator="/" class="dbin-center">
-                <el-breadcrumb-item :key="index" v-for="(item,index) of directory">
-                    <span class="box-hand box-padding">{{item}}</span>
-                </el-breadcrumb-item>
-            </el-breadcrumb>
-
-
+            <el-button
+                    @click="createHandler(`新建目录`,{bucketName:queryFormData.bucketName })"
+                    plain type="primary">新建目录
+            </el-button>
         </div>
-        <el-table :data="page.list" :ref="tableRef" height="100%" slot="table">
+        <div slot="table" style="height: calc(100% - 40px)">
+            <div class="block-box-shadow">
+                <div class="dbin-top-red-line"></div>
+                <span style="float:left">当前位置:</span>
+                <el-breadcrumb class="dbin-center" separator="/">
+                    <el-breadcrumb-item :key="index" v-for="(item,index) of directory">
+                        <span @click="jumpDirPath(item,index)" class="box-hand box-padding">{{item}}</span>
+                    </el-breadcrumb-item>
+                </el-breadcrumb>
+            </div>
 
 
-            <el-table-column label="名称" prop="name" show-overflow-tooltip>
-                <template slot-scope="props">
+            <el-table :data="page.list" :ref="tableRef" height="100%">
+
+
+                <el-table-column label="名称" prop="name" show-overflow-tooltip align="center">
+                    <template slot-scope="props">
                     <span @click="openFolderHandler(props.row)" class="box-hand">
+<!--                            <ev-iconFont icon="icon-folde" v-if="props.row.type==='dir'"></ev-iconFont>-->
+                        <!--                            <ev-iconFont icon="icon-file" v-else></ev-iconFont>-->
+                            <i class="el-icon-folder-checked" v-if="props.row.type==='dir'"></i>
+                            <i class="el-icon-document-copy" v-else></i>
+
                         {{props.row.name}}&nbsp;&nbsp;
-                            <ev-iconFont icon="icon-folder" v-if="props.row.type==='dir'"></ev-iconFont>
-                            <ev-iconFont icon="icon-wenjian" v-else></ev-iconFont>
 
                     </span>
-                </template>
-            </el-table-column>
-            <el-table-column label="类型" prop="type" show-overflow-tooltip>
-                <template slot-scope="props">
-                    {{props.row.type==="dir"?"目录":"文件"}}
+                    </template>
+                </el-table-column>
+                <el-table-column label="类型/大小" show-overflow-tooltip align="center">
+                    <template slot-scope="props">
 
-                </template>
-            </el-table-column>
-            <el-table-column label="大小" prop="size" show-overflow-tooltip>
-                <template slot-scope="props">
-                    {{props.row.size}} M
-                </template>
-            </el-table-column>
+                        <span v-if="props.row.type==='dir'">
+                            目录
+                        </span>
+                        <span v-else>
+                            {{props.row.size}} KB
+                        </span>
+                    </template>
+                </el-table-column>
 
-            <el-table-column label="创建时间" width="142px">
-                <template slot-scope="props">
-                    {{props.row.createDatetime | dateFormat('yyyy-MM-dd hh:mm:ss')}}
-
-
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" width="300">
-                <template slot-scope="props">
-
-                    <el-button @click="deleteHandler({ id: props.row.id })"
-                               class="in-table-button">删除
-                    </el-button>
-
-                    <el-button @click="detailHandler(props.row.id,'获取链接')" class="in-table-button"
-                               v-if="props.row.type!=='dir'">获取链接
-                    </el-button>
-
-                    <el-button @click="openFolderHandler(props.row)" class="in-table-button"
-                               v-else>打开
-                    </el-button>
+                <el-table-column label="创建时间" align="center">
+                    <template slot-scope="props">
+                        {{props.row.createDatetime | dateFormat('yyyy-MM-dd hh:mm:ss')}}
 
 
-                </template>
-            </el-table-column>
-        </el-table>
-<div slot="page">
-    hisdfpage
-</div>
-        <!--<el-pagination slot="page" background layout="total, prev, pager, next" :total="page.total"
-                       :page-size="page.pageSize"
-                       @current-change="pageNoToggleHandler"
-                       @size-change="pageSizeToggleHandler"></el-pagination>
--->
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="300" align="center">
+                    <template slot-scope="props">
+
+                        <el-button @click="detailHandler(props.row.id,'获取链接')" plain type="primary"
+                                   v-if="props.row.type!=='dir'">获取链接
+                        </el-button>
+
+                        <el-button @click="openFolderHandler(props.row)"  plain type="primary"
+                                   v-else>打开
+                        </el-button>
+
+                        <el-button @click="deleteHandler({ id: props.row.id })"
+                                   plain type="danger">删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+
+
+        <el-pagination :page-size="page.pageSize" :total="page.total" @current-change="pageNoToggleHandler"
+                       @size-change="pageSizeToggleHandler"
+                       background
+                       layout="total, prev, pager, next"
+                       slot="page"></el-pagination>
 
         <edit :ref="dialogRef"></edit>
         <upload-file @refreshList="refreshQuery" ref="uploadFileRef"></upload-file>
@@ -92,6 +96,7 @@
 </template>
 
 <script>
+
     export default JBoot({
         components: {
             'edit': require('./edit.vue').default,
@@ -103,30 +108,17 @@
                 moduleName: 'file',
                 bucketName: "",
                 buckets: [],
-
+                directory: ["/"],
             }
         },
 
         methods: {
-            // 初始化page数据
-            // initPageInfo (response){
-            //     let list = [];
-            //
-            //     if(response && this.$getObjectType(response) !== '[object object]'){
-            //         list = response;
-            //     }
-            //
-            //     this.$set(this, 'page', { list });
-            // },
 
-            handleLoad(row, treeNode, resolve) {
-                // this.$api('dict', 'queryChildren', {parentId: row.id}).then(response => {
-                //     resolve(response.data || []);
-                // });
-            },
+            jumpDirPath(item, index) {
+                let directory = this.directory;
+                this.directory = directory.splice(0, index + 1) || [];
+                this.queryHandler();
 
-            afterInit() {
-                this.$set(this,"directory",["/"])
             },
 
             //获取查询条件
@@ -134,23 +126,41 @@
                 if (!this.queryFormData.bucketName) {
                     return this.queryBuckets();
                 }
-
-                let directory = this.directory;
-                for (let directoryElement of directory) {
-                    this.getQueryParam().directory += directoryElement + "/";
-                }
+                this.$set(this.queryFormData, "directory", this.getDirectory());
 
                 return this.queryFormData;
             },
 
             openFolderHandler(data) {
                 if (data.type !== "dir") {
-                    this.detailHandler(data.id,'获取链接');
+                    this.detailHandler(data.id, '获取链接');
                     return;
                 }
+
                 this.directory.push(data.name);
-                // this.queryFormData.directory = data.directory + data.name;
+
                 this.refreshQuery();
+            },
+            getDirectory() {
+
+                let path = "";
+                let directory = this.directory || [];
+                for (let dir of directory) {
+                    if (!dir || dir === "/") {
+                        continue;
+                    }
+
+                    dir = this.getSlash(dir || "");
+
+                    path += dir;
+                }
+                return path;
+            },
+            getSlash(addr) {
+                if (addr.startsWith("/")) {
+                    return addr;
+                }
+                return "/" + addr;
             },
             refreshQuery() {
 
@@ -164,7 +174,8 @@
                             let buckets = resp.datalist;
                             this.buckets = buckets;
 
-                            let name = buckets[0].name;
+                            // todo 列表集合为空处理
+                            let name = buckets[0].name || "";
                             this.queryFormData.bucketName = name;
 
                             resolve({bucketName: name})
@@ -176,21 +187,22 @@
             checkBucket(item) {
 
                 let directory = this.directory;
-                this.directory =  directory[0]|| ["/"];
+                this.directory = directory[0] || ["/"];
 
-                    this.$set(this.queryFormData, "bucketName", item);
+                this.$set(this.queryFormData, "bucketName", item);
 
                 this.queryHandler();
             },
 
             uploadHandler(title) {
                 let bucket = this.queryFormData.bucketName;
+                let directory = this.getDirectory();
 
-                this.$getRef("uploadFileRef").show(title, bucket);
+                this.$getRef("uploadFileRef").show(title, bucket, directory);
             }
 
         }
-    })  .module('pager')
+    }).module('pager')
         .list()
         .build();
 </script>
@@ -219,7 +231,6 @@
                 float: left;
 
 
-
             }
 
             .el-breadcrumb__item {
@@ -228,8 +239,6 @@
                 margin-bottom: 5px;
             }
         }
-
-
 
 
     }

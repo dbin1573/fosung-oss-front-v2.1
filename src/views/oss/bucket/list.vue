@@ -1,30 +1,27 @@
 <template>
     <ListLayout title="字典管理">
-        <el-button slot="top-right" type="primary" plain @click="createHandler(`新增字典项`)">新增</el-button>
+        <el-button @click="createHandler(`新增字典项`)" plain slot="top-right" type="primary">新增</el-button>
 
-        <el-table slot="table" :ref="tableRef" :data="page.list" height="100%" >
+        <el-table :data="page.list" :ref="tableRef" height="100%" slot="table">
 
-            <el-table-column show-overflow-tooltip label="空间名称" prop="name"></el-table-column>
+            <el-table-column label="空间名称" prop="name" show-overflow-tooltip align="center"></el-table-column>
 
-            <el-table-column label="创建时间" >
+            <el-table-column label="创建时间" align="center">
                 <template slot-scope="props">
                     {{props.row.createDatetime | dateFormat('yyyy-MM-dd hh:mm:ss')}}
 
-
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="300">
+            <el-table-column label="操作" width="300" align="center">
                 <template slot-scope="props">
-                    <el-button class="in-table-button"
-                               @click="editHandler(props.row.id, `编辑【${props.row.name}】字典项`)">编辑
+                    <el-button @click="editHandler(props.row.id, `编辑【${props.row.name}】字典项`)"
+                               plain type="primary">编辑
 
                     </el-button>
-                    <el-button class="in-table-button"
-                               @click="deleteHandler({ id: props.row.id })">删除
+                    <el-button @click="deleteHandler({ id: props.row.id })"
+                               plain type="danger">删除
 
                     </el-button>
-
-
 
                 </template>
             </el-table-column>
@@ -40,7 +37,7 @@
             'edit': require('./edit.vue').default
         },
 
-        data (){
+        data() {
             return {
                 moduleName: 'bucket',
             }
@@ -49,19 +46,7 @@
         methods: {
             //初始化page数据
             // initPageInfo (response){
-                // let list = [];
-                //
-                // if(response && this.$getObjectType(response) !== '[object object]'){
-                //     list = response;
-                // }
-                //
-                // this.$set(this, 'page', { list });
-            // },
 
-            // handleLoad (row, treeNode, resolve){
-            //     this.$api('dict', 'queryChildren', { parentId: row.id }).then(response => {
-            //         resolve(response.data || []);
-            //     });
             // }
         }
     }).module("pager")

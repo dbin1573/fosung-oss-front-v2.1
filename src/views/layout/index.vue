@@ -620,11 +620,12 @@
                 }
 
                 & > .content-wrap {
-                    padding: 8px 10px;
+                    //fix bug 修改样式
+                    padding: 22px 10px;
                     height: calc(100% - 40px - 20px);
                     width: calc(100% - 20px);
                     overflow-y: auto;
-                    margin: 2px 0;
+                    margin: -18px 0;
 
                     & > .animated {
                         height: 100%;
