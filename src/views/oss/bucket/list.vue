@@ -5,9 +5,10 @@
         <el-table slot="table" :ref="tableRef" :data="page.list" height="100%" >
 
             <el-table-column show-overflow-tooltip label="空间名称" prop="name"></el-table-column>
-            <el-table-column label="创建时间" width="142px">
+
+            <el-table-column label="创建时间" >
                 <template slot-scope="props">
-                    {{props.row.createTime | dateFormat('yyyy-MM-dd hh:mm:ss')}}
+                    {{props.row.createDatetime | dateFormat('yyyy-MM-dd hh:mm:ss')}}
 
 
                 </template>

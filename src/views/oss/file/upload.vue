@@ -1,7 +1,9 @@
 <template>
-    <el-dialog append-to-body :title="title" :visible.sync="visible" class="upload-dialog-warp" center width="500px">
+    <el-dialog append-to-body :title="title" :visible.sync="visible" class="upload-dialog-warp" center width="500px"
+    :before-close="closeHandler">
 
         <el-upload
+                :on-success="refreshHandler"
                 :action="ossPath"
                 class="upload-demo"
                 drag
@@ -32,6 +34,14 @@
                 let path = "/api/oss/single/" + bucket + "/upload";
 
                 this.$set(this, "ossPath", path);
+            },
+            refreshHandler() {
+                this.$emit("refreshList");
+
+            },
+            closeHandler() {
+                this.visible=false;
+                this.refreshHandler();
             }
         }
     })
