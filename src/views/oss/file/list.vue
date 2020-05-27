@@ -32,7 +32,7 @@
             <el-table :data="page.list" :ref="tableRef" height="100%">
 
 
-                <el-table-column label="名称" prop="name" show-overflow-tooltip align="center">
+                <el-table-column align="center" label="名称" prop="name" show-overflow-tooltip>
                     <template slot-scope="props">
                     <span @click="openFolderHandler(props.row)" class="box-hand">
 <!--                            <ev-iconFont icon="icon-folde" v-if="props.row.type==='dir'"></ev-iconFont>-->
@@ -45,7 +45,7 @@
                     </span>
                     </template>
                 </el-table-column>
-                <el-table-column label="类型/大小" show-overflow-tooltip align="center">
+                <el-table-column align="center" label="类型/大小" show-overflow-tooltip>
                     <template slot-scope="props">
 
                         <span v-if="props.row.type==='dir'">
@@ -57,21 +57,21 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label="创建时间" align="center">
+                <el-table-column align="center" label="创建时间">
                     <template slot-scope="props">
                         {{props.row.createDatetime | dateFormat('yyyy-MM-dd hh:mm:ss')}}
 
 
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="300" align="center">
+                <el-table-column align="center" label="操作" width="300">
                     <template slot-scope="props">
 
                         <el-button @click="detailHandler(props.row.id,'获取链接')" plain type="primary"
                                    v-if="props.row.type!=='dir'">获取链接
                         </el-button>
 
-                        <el-button @click="openFolderHandler(props.row)"  plain type="primary"
+                        <el-button @click="openFolderHandler(props.row)" plain type="primary"
                                    v-else>打开
                         </el-button>
 
@@ -136,7 +136,6 @@
                     this.detailHandler(data.id, '获取链接');
                     return;
                 }
-
                 this.directory.push(data.name);
 
                 this.refreshQuery();
@@ -185,11 +184,10 @@
             },
 
             checkBucket(item) {
-
-                let directory = this.directory;
-                this.directory = directory[0] || ["/"];
+                this.directory.splice(1);
 
                 this.$set(this.queryFormData, "bucketName", item);
+
 
                 this.queryHandler();
             },

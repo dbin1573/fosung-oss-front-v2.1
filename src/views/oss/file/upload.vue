@@ -46,14 +46,17 @@
                 this.$set(this, "ossPath", path);
             },
 
-            refreshHandler() {
-
+            refreshHandler(resp) {
+                if (!resp.success) {
+                    this.$error(resp.message);
+                } else {
+                    this.$info("上传成功")
+                }
                 this.$emit("refreshList");
             },
             closeHandler() {
                 this.visible = false;
                 this.$getRef("ossUpload").clearFiles();
-
                 this.refreshHandler();
             }
         },
