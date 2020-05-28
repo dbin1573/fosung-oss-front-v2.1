@@ -23,7 +23,7 @@
                 <span style="float:left">当前位置:</span>
                 <el-breadcrumb class="dbin-center" separator="/">
                     <el-breadcrumb-item :key="index" v-for="(item,index) of directory">
-                        <span @click="jumpDirPath(item,index)" class="box-hand box-padding">{{item}}</span>
+                        <span @click="jumpDirPath(item,index)" class="bucket-box-handbox-hand bucket-box-padding">{{item}}</span>
                     </el-breadcrumb-item>
                 </el-breadcrumb>
             </div>
@@ -35,7 +35,7 @@
 
                 <el-table-column align="left" label="名称" prop="name" show-overflow-tooltip>
                     <template slot-scope="props">
-                    <span @click="openFolderHandler(props.row)" class="box-hand">
+                    <span @click="openFolderHandler(props.row)" class="bucket-box-hand">
                             <ev-iconFont icon="icon-dbinwenjian" v-if="props.row.type==='dir'"></ev-iconFont>
                                                     <ev-iconFont icon="iconbuoumaotubiao25" v-else></ev-iconFont>
 
@@ -112,6 +112,7 @@
 
         methods: {
 
+
             jumpDirPath(item, index) {
                 let directory = this.directory;
                 this.directory = directory.splice(0, index + 1) || [];
@@ -121,11 +122,10 @@
 
             //获取查询条件
             getQueryParam() {
+                this.$set(this.queryFormData, "directory", this.getDirectory());
                 if (!this.queryFormData.bucketName) {
                     return this.queryBuckets();
                 }
-                this.$set(this.queryFormData, "directory", this.getDirectory());
-
                 return this.queryFormData;
             },
 
@@ -172,14 +172,14 @@
                             this.buckets = buckets;
 
                             // todo 列表集合为空处理
-                            let name = buckets[0].name || "";
-                            this.queryFormData.bucketName = name;
-
-                            resolve({bucketName: name})
+                            let bucketName = buckets[0].name || "";
+                            this.$set(this.queryFormData, "bucketName", bucketName);
+                            resolve({bucketName: bucketName})
                         });
                 });
 
             },
+
 
             checkBucket(item) {
                 this.directory.splice(1);
@@ -204,20 +204,19 @@
 </script>
 <style lang="scss">
     .file-warp {
-        & .box-hand {
+        & .bucket-box-hand {
             cursor: pointer;
         }
 
-        & .box-padding {
+        & .bucket-box-padding {
             /*padding: 15px 15px 15px 25px;*/
             padding: 10px 0px 10px 5px;
         }
 
         & .block-box-shadow {
-            height: 23px;
+
             margin-bottom: 15px;
             padding-bottom: 7px;
-
             & > .dbin-top-red-line {
                 background: #CC0000;
                 width: 2px;

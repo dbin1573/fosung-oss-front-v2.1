@@ -9,7 +9,7 @@ export default Object.assign([
     '/logout',
 
 
-    '/api/file/list',
+    '/api/file/query',
 ].reduce((result, url) => Object.assign(result, { [url]: request => generateResponseResult(url, request) }), {}), {});
 
 const exDataMap = {
