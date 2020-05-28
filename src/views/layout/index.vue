@@ -33,7 +33,7 @@
                 </el-dropdown>
 
                 <div class="logout-wrap">
-                    <ev-iconFont icon="icon-tuichu" @click.native="logoutHandler"></ev-iconFont>
+                    <ev-iconFont @click.native="logoutHandler" icon="icontuichu"></ev-iconFont>
                 </div>
             </div>
         </div>
@@ -102,7 +102,7 @@
                     </div>
                     <div class="path" v-else>
                         <ev-iconFont
-                                icon="icon-menu-two"
+                                icon="iconcaidansangehengxian"
                                 :class="{'collapse': menuCollapse}"
                                 @click.native="menuCollapse = !menuCollapse"
                         ></ev-iconFont>

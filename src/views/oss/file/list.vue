@@ -1,5 +1,5 @@
 <template>
-    <ListLayout class="layout-window-warp" title="文件管理">
+    <ListLayout class="file-warp" title="文件管理">
 
         <div slot="top-right">
             <el-select @change="checkBucket" filterable v-model="queryFormData.bucketName">
@@ -31,14 +31,13 @@
 
             <el-table :data="page.list" :ref="tableRef" height="100%">
 
+                <el-table-column label="序号" type="index" width="100px"></el-table-column>
 
-                <el-table-column align="center" label="名称" prop="name" show-overflow-tooltip>
+                <el-table-column align="left" label="名称" prop="name" show-overflow-tooltip>
                     <template slot-scope="props">
                     <span @click="openFolderHandler(props.row)" class="box-hand">
-<!--                            <ev-iconFont icon="icon-folde" v-if="props.row.type==='dir'"></ev-iconFont>-->
-                        <!--                            <ev-iconFont icon="icon-file" v-else></ev-iconFont>-->
-                            <i class="el-icon-folder-checked" v-if="props.row.type==='dir'"></i>
-                            <i class="el-icon-document-copy" v-else></i>
+                            <ev-iconFont icon="icon-dbinwenjian" v-if="props.row.type==='dir'"></ev-iconFont>
+                                                    <ev-iconFont icon="iconbuoumaotubiao25" v-else></ev-iconFont>
 
                         {{props.row.name}}&nbsp;&nbsp;
 
@@ -82,7 +81,6 @@
                 </el-table-column>
             </el-table>
         </div>
-
 
         <el-pagination :page-size="page.pageSize" :total="page.total" @current-change="pageNoToggleHandler"
                        @size-change="pageSizeToggleHandler"
@@ -205,7 +203,7 @@
         .build();
 </script>
 <style lang="scss">
-    .layout-window-warp {
+    .file-warp {
         & .box-hand {
             cursor: pointer;
         }

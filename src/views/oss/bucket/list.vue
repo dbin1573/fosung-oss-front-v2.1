@@ -1,8 +1,10 @@
 <template>
-    <ListLayout title="字典管理">
+    <ListLayout class="bucket-warp" title="字典管理">
         <el-button @click="createHandler(`新增字典项`)" plain slot="top-right" type="primary">新增</el-button>
 
         <el-table :data="page.list" :ref="tableRef" height="100%" slot="table">
+
+            <el-table-column label="序号" type="index"></el-table-column>
 
             <el-table-column label="空间名称" prop="name" show-overflow-tooltip align="center"></el-table-column>
 
@@ -53,3 +55,8 @@
         .list()
         .build();
 </script>
+<style lang="scss">
+    .bucket-warp {
+
+    }
+</style>

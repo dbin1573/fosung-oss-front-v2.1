@@ -23,8 +23,8 @@
                 editFormRef: 'dictEditFormRef',
                 rules: {
                     name: [
-                        { required: true, message: '请输入字典名称' },
-                        { min: 1, max: 225 , message: '字典名称为1~225个字符' },
+                        {required: true, message: '请输入空间名称'},
+                        {min: 1, max: 225, message: '空间名称为1~225个字符'},
                     ]
                 }
             }

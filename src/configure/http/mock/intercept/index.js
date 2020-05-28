@@ -7,11 +7,9 @@ export default Object.assign([
     '/user/configure',
     '/user/info',
     '/logout',
-    '/sys/dict/query',
-    '/sys/dict/queryChildren',
-    '/sys/dict/getOne',
-    '/sys/dict/save',
-    '/sys/dict/delete'
+
+
+    '/api/file/list',
 ].reduce((result, url) => Object.assign(result, { [url]: request => generateResponseResult(url, request) }), {}), {});
 
 const exDataMap = {

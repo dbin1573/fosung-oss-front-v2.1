@@ -4,11 +4,11 @@
         <el-form :model="formData" :ref="editFormRef" :rules="rules" @submit.native.prevent label-width="70px">
 
 
-            <el-form-item label="文件地址" prop="directory" v-if="parentParam.id">
+            <el-form-item label="文件地址" prop="apth" v-if="parentParam.id">
                 <el-input id="fileUrl" placeholder="文件地址" readonly type="text" v-model="formData.url"></el-input>
             </el-form-item>
 
-            <el-form-item label="名称" prop="directory" v-else>
+            <el-form-item label="名称" prop="name" v-else>
                 <el-input :disabled="readonly" placeholder="请输入目录名称" type="text" v-model="formData.name"></el-input>
             </el-form-item>
 
@@ -62,7 +62,8 @@
 
                 this.$notify({
                     type: 'success',
-                    title: "内容复制成功，去粘贴看看！",message:"OSS"});
+                    title: "内容复制成功，去粘贴看看！", message: "OSS-DBin"
+                });
             },
 
             docCopy(id) {

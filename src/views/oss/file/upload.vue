@@ -48,9 +48,15 @@
 
             refreshHandler(resp) {
                 if (!resp.success) {
-                    this.$error(resp.message);
+                    this.$notify({
+                        type: 'error',
+                        title: resp.message || "上传失败", message: "OSS-DBin"
+                    });
                 } else {
-                    this.$info("上传成功")
+                    this.$notify({
+                        type: 'success',
+                        title: resp.data.url || "暂时无法获取地址", message: "OSS-DBin"
+                    });
                 }
                 this.$emit("refreshList");
             },
