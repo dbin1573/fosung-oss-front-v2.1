@@ -63,7 +63,6 @@
             closeHandler() {
                 this.visible = false;
                 this.$getRef("ossUpload").clearFiles();
-                this.refreshHandler();
             }
         },
 

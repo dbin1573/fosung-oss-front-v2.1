@@ -13,7 +13,7 @@
             <el-button @click="uploadHandler(`上传文件`)" plain type="danger">上传</el-button>
 
             <el-button
-                    @click="createHandler(`新建目录`,{bucketName:queryFormData.bucketName })"
+                    @click="createHandler(`新建目录`,{bucketName:queryFormData.bucketName,directory:queryFormData.directory })"
                     plain type="primary">新建目录
             </el-button>
         </div>
@@ -23,7 +23,8 @@
                 <span style="float:left">当前位置:</span>
                 <el-breadcrumb class="dbin-center" separator="/">
                     <el-breadcrumb-item :key="index" v-for="(item,index) of directory">
-                        <span @click="jumpDirPath(item,index)" class="bucket-box-handbox-hand bucket-box-padding">{{item}}</span>
+                        <span @click="jumpDirPath(item,index)"
+                              class="bucket-box-hand bucket-box-padding"><b>{{item}}</b></span>
                     </el-breadcrumb-item>
                 </el-breadcrumb>
             </div>
@@ -37,7 +38,7 @@
                     <template slot-scope="props">
                     <span @click="openFolderHandler(props.row)" class="bucket-box-hand">
                             <ev-iconFont icon="icon-dbinwenjian" v-if="props.row.type==='dir'"></ev-iconFont>
-                                                    <ev-iconFont icon="iconbuoumaotubiao25" v-else></ev-iconFont>
+                            <ev-iconFont icon="iconbuoumaotubiao25" v-else></ev-iconFont>
 
                         {{props.row.name}}&nbsp;&nbsp;
 
@@ -66,13 +67,16 @@
                 <el-table-column align="center" label="操作" width="300">
                     <template slot-scope="props">
 
-                        <el-button @click="detailHandler(props.row.id,'获取链接')" plain type="primary"
-                                   v-if="props.row.type!=='dir'">获取链接
-                        </el-button>
+                        <span v-if="props.row.type!=='dir'">
+                            <el-button @click="detailHandler(props.row.id,'获取链接')" plain type="primary">获取链接</el-button>
+                            <el-button @click="downloadHandler(props.row.url)" plain type="primary">下载</el-button>
 
-                        <el-button @click="openFolderHandler(props.row)" plain type="primary"
-                                   v-else>打开
-                        </el-button>
+                        </span>
+
+                        <span v-else>
+                            <el-button @click="openFolderHandler(props.row)" plain type="primary">打开</el-button>
+
+                        </span>
 
                         <el-button @click="deleteHandler({ id: props.row.id })"
                                    plain type="danger">删除
@@ -89,7 +93,9 @@
                        slot="page"></el-pagination>
 
         <edit :ref="dialogRef"></edit>
+        <preview-pdf ref="previewPdfRef"></preview-pdf>
         <upload-file @refreshList="refreshQuery" ref="uploadFileRef"></upload-file>
+
     </ListLayout>
 </template>
 
@@ -111,6 +117,20 @@
         },
 
         methods: {
+            viewHandler(data) {
+                // window.location.href=data.url;
+                // window.open(data.url,"_blank",'location:yes');
+                window.open(data.url, "_blank")
+            },
+
+            downloadHandler(url) {
+
+            },
+
+            scrollHandler() {
+                let fileWarp = document.getElementsByClassName("file-warp");
+                this.$scrollTop(fileWarp, 0, 100, 1000, null)
+            },
 
 
             jumpDirPath(item, index) {
@@ -131,7 +151,8 @@
 
             openFolderHandler(data) {
                 if (data.type !== "dir") {
-                    this.detailHandler(data.id, '获取链接');
+                    // this.detailHandler(data.id, '获取链接');
+                    this.viewHandler(data);
                     return;
                 }
                 this.directory.push(data.name);
@@ -209,7 +230,6 @@
         }
 
         & .bucket-box-padding {
-            /*padding: 15px 15px 15px 25px;*/
             padding: 10px 0px 10px 5px;
         }
 
@@ -217,6 +237,7 @@
 
             margin-bottom: 15px;
             padding-bottom: 7px;
+
             & > .dbin-top-red-line {
                 background: #CC0000;
                 width: 2px;
