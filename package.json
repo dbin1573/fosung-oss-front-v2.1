@@ -52,7 +52,7 @@
     "file-loader": "^1.1.11",
     "jboot-env": "1.1.5765",
     "moment": "^2.24.0",
-    "node-sass": "^4.7.2",
+    "node-sass": "^4.13.1",
     "open-browser-webpack-plugin": "^0.0.5",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^3.0.0",
