@@ -30,7 +30,7 @@
   "dependencies": {
     "@riophae/vue-treeselect": "0.0.38",
     "autoprefixer": "7.2.3",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel-core": "6.26.0",
     "babel-eslint": "8.0.3",
     "babel-helper-vue-jsx-merge-props": "2.0.3",
